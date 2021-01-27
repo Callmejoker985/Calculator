@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <style>
+        main{
+            width: 300px;
+            margin: 0 auto;
+            margin-top: 100px;
+            position: relative;
+        }
+        .title{
+            text-align: center;
+            font-size: 12px;
+            color: #666666;
+        }
+        .content{
+            border: 1px solid #666666;
+            width: 100%;
+        }
+        .console{
+            padding: 30px 6px 0 5px;
+            height: 35px;
+            font-size: 30px;
+            line-height: 35px;
+            font-weight: bold;
+            text-align: right;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .button-table{
+            width: 100%;
+            text-align: center;
+            user-select: none;
+        }
+        .button-table td{
+            border: 1px solid rgba(0, 0, 0, 0);
+            background: rgba(40, 40, 40, 0.1);
+            width: 74px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .button-table td:hover{
+            background: rgba(40, 40, 40, 0.5);
+            color: white;
+        }
+        .tip{
+            position: absolute;
+            width: 99%;
+            height: 20px;
+            top: 25px;
+            right: 0.5px;
+            font-size: 12px;
+            color: red;
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <div class="tip" id="tip"></div>
+        <div class="title">简单计算器</div>
+        <div class="content">
+            <div class="console" id="console"></div>
+            <table class="button-table">
+                <tbody>
+                <tr><td class="func">sin</td><td class="func">cos</td><td class="func">sqrt</td><td class="delete">&larr;</td></tr>
+                <tr><td class="character number">7</td><td class="character number">8</td><td class="character number">9</td><td class="character operate">+</td></tr>
+                <tr><td class="character number">4</td><td class="character number">5</td><td class="character number">6</td><td class="character operate">-</td></tr>
+                <tr><td class="character number">3</td><td class="character number">2</td><td class="character number">1</td><td class="character operate">*</td></tr>
+                <tr><td class="character number">.</td><td class="character number">0</td><td id="submit-btm">=</td ><td class="character operate">/</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+</body>
+<script>
+    var MsgTable = new Map();
+    var getValued = false;
+    MsgTable.set("1000", "表达式错误！");
+
+    var protocol = "http";
+    var hostAddress = "localhost";
+    var port = "8080";
+    var getValuePath = "result";
+    var getValueURL = protocol + "://" + hostAddress + ":" + port + "/" + getValuePath;
+
+    $(".number").click(function () {
+        if (getValued) { // 如果console上已经获得一次结果了，清空它
+            $("#console").html("");
+            $("#tip").html("");
+            getValued = false;
+        }
+    });
+
+    $(".operate").click(function () {
+        if (getValued) {  // 如果console上已经获得一次结果了，且继续追加表达式
+            getValued = false;
+        }
+    });
+
+    /*
+    * 为所有的字符（数字、操作符）绑定点击事件。每次点击，将当前点击字符追加到表达式中。
+    */
+    $(".character").click(function () {
+        let consoleDiv = $("#console");
+        let expression = consoleDiv.html();          // 获取当前的表达式
+        let clickedChar = $(this).html();            // 获取当前点击的字符
+        consoleDiv.html(expression + clickedChar);   // 将拼接后的新表达式刷新到展示框中
+        setSmallerFont();                            // 调整展示框中字体大小
+    });
+
+    /*
+    * 为4个函数按钮绑定点击事件。和为字符绑定点击事件在逻辑上差不多，不同之处在于要把函数名字加在表达式前面。
+    */
+    $(".func").click(function () {
+        let consoleDiv = $("#console");
+        let expression = consoleDiv.html();
+        let clickedChar = $(this).html();
+        consoleDiv.html(clickedChar + "(" + expression + ")");
+        setSmallerFont();
+    });
+
+    /*
+    * 为删除按钮绑定点击事件，删除表达式最后一个符号。如果是右括号的话同时删除前面的函数名
+    */
+    $(".delete").click(function () {
+        let consoleDiv = $("#console");
+        let expression = consoleDiv.html();
+        let exprLen = expression.length;
+        let lastChar = expression.charAt(exprLen-1);
+
+        let beginSubIndex = -1;
+        if (lastChar === ")"){
+            beginSubIndex = expression.indexOf("(");
+        }
+        consoleDiv.html(expression.substring(beginSubIndex+1, exprLen-1));
+        // setGigFont();
+    });
+
+    /*
+    * 为等号按钮绑定点击事件。点击时，将当前表达式上传到服务器，并根据服务器返回的MsgCode，选择展示计算结果，还是展示错误信息（表达式错误）。
+    */
+    $("#submit-btm").click(function () {
+        let expression = $("#console").html();
+        console.log(getValueURL+"?expression="+expression);
+
+        // 发送ajax请求
+        $.ajax({
+            url: getValueURL,
+            method: "GET",
+            dataType: "json",
+            data: {
+                "expression": expression            
+            },
+            success: function (data) {
+                let MsgCode = data["MsgCode"];
+                let exprsResult = data["result"];
+
+                if (MsgCode === "1000"){           // 返回值代码为1001代表表达式错误
+                    $("#tip").html(MsgTable.get(MsgCode));
+                    return null;
+                }
+                // 成功的情况
+                $("#console").html(exprsResult);
+                $("#tip").html("");
+                getValued = true;
+            }
+        })
+    });
+
+    function setSmallerFont() {
+        let consoleDiv = $("#console");
+        let expression = consoleDiv.html();
+        let maxFontSize = 30;
+        let rangeLen = (expression.length>16)? (expression.length-16)/1.3: 0;
+        let newFontSize = Math.round(maxFontSize - rangeLen);
+        newFontSize = (newFontSize<=12)? 12: newFontSize;
+        consoleDiv.css("font-size", ""+newFontSize+"px");
+    }
+    /*
+    function setGigFont() {
+        let consoleDiv = $("#console");
+        let expression = consoleDiv.html();
+        let maxFontSize = 30;
+        let rangeLen = (expression.length>16)? (expression.length-16)/1.3: 0;
+        let newFontSize = Math.round(maxFontSize - rangeLen);
+        newFontSize = (newFontSize<=12)? 12: newFontSize;
+        consoleDiv.css("font-size", ""+newFontSize+"px");
+    }
+    */
+</script>
+</html>
