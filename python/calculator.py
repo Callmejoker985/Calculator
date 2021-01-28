@@ -23,7 +23,7 @@ class calculator:
         self.window = Tk()#建立窗口
         #self.window = tkinter.Tk()
         self.window.title("calculator") #计算器名称
-        self.window.iconbitmap('D:\\Git_Project\\Calculator\\favicon.ico')#添加图标
+        self.window.iconbitmap('D:\\Git_Project\\Calculator\\python\\favicon.ico')#添加图标
         
         self.display = StringVar()#将要在大面板上显示的内容：数字及运算结果
         self.display.set('来吧!!!')#设置初始内容
@@ -103,88 +103,88 @@ class calculator:
         show_label = Label(self.window, bd=3, bg='white', font=('宋体', 30), anchor='e', textvariable=self.display)
         show_label.place(x=5, y=20, width=270, height=70)
         # 功能按钮MC
-        button_mc = tkinter.Button(self.window, text='MC', command=self.wait)
+        button_mc = Button(self.window, text='MC', command=self.wait)
         button_mc.place(x=5, y=95, width=50, height=50)
         # 功能按钮MR
-        button_mr = tkinter.Button(self.window, text='MR', command=self.wait)
+        button_mr = Button(self.window, text='MR', command=self.wait)
         button_mr.place(x=60, y=95, width=50, height=50)
         # 功能按钮MS
-        button_ms = tkinter.Button(self.window, text='MS', command=self.wait)
+        button_ms = Button(self.window, text='MS', command=self.wait)
         button_ms.place(x=115, y=95, width=50, height=50)
         # 功能按钮M+
-        button_mjia = tkinter.Button(self.window, text='M+', command=self.wait)
+        button_mjia = Button(self.window, text='M+', command=self.wait)
         button_mjia.place(x=170, y=95, width=50, height=50)
         # 功能按钮M-
-        button_mjian = tkinter.Button(self.window, text='M-', command=self.wait)
+        button_mjian = Button(self.window, text='M-', command=self.wait)
         button_mjian.place(x=225, y=95, width=50, height=50)
         # 功能按钮←
-        button_zuo = tkinter.Button(self.window, text='←', command=self.dele_one)
+        button_zuo = Button(self.window, text='←', command=self.dele_one)
         button_zuo.place(x=5, y=150, width=50, height=50)
         # 功能按钮CE
-        button_ce = tkinter.Button(self.window, text='CE', command=lambda: self.display.set("重新输入"))
+        button_ce = Button(self.window, text='CE', command=lambda: self.display.set("重新输入"))
         button_ce.place(x=60, y=150, width=50, height=50)
         # 功能按钮C
-        button_c = tkinter.Button(self.window, text='C', command=self.sweeppress)
+        button_c = Button(self.window, text='C', command=self.sweeppress)
         button_c.place(x=115, y=150, width=50, height=50)
         # 功能按钮±
-        button_zf = tkinter.Button(self.window, text='±', command=self.zf)
+        button_zf = Button(self.window, text='±', command=self.zf)
         button_zf.place(x=170, y=150, width=50, height=50)
         # 功能按钮√
-        button_kpf = tkinter.Button(self.window, text='√', command=self.kpf)
+        button_kpf = Button(self.window, text='√', command=self.kpf)
         button_kpf.place(x=225, y=150, width=50, height=50)
         # 数字按钮7
-        button_7 = tkinter.Button(self.window, text='7', command=lambda: self.pressnum('7'))
+        button_7 = Button(self.window, text='7', command=lambda: self.pressnum('7'))
         button_7.place(x=5, y=205, width=50, height=50)
         # 数字按钮8
-        button_8 = tkinter.Button(self.window, text='8', command=lambda: self.pressnum('8'))
+        button_8 = Button(self.window, text='8', command=lambda: self.pressnum('8'))
         button_8.place(x=60, y=205, width=50, height=50)
         # 数字按钮9
-        button_9 = tkinter.Button(self.window, text='9', command=lambda: self.pressnum('9'))
+        button_9 = Button(self.window, text='9', command=lambda: self.pressnum('9'))
         button_9.place(x=115, y=205, width=50, height=50)
         # 功能按钮/
-        button_division = tkinter.Button(self.window, text='/', command=lambda: self.presscalculate('/'))
+        button_division = Button(self.window, text='/', command=lambda: self.presscalculate('/'))
         button_division.place(x=170, y=205, width=50, height=50)
         # 功能按钮%
-        button_remainder = tkinter.Button(self.window, text='//', command=lambda:self.presscalculate('//'))
+        button_remainder = Button(self.window, text='//', command=lambda:self.presscalculate('//'))
         button_remainder.place(x=225, y=205, width=50, height=50)
         # 数字按钮4
-        button_4 = tkinter.Button(self.window, text='4', command=lambda: self.pressnum('4'))
+        button_4 = Button(self.window, text='4', command=lambda: self.pressnum('4'))
         button_4.place(x=5, y=260, width=50, height=50)
         # 数字按钮5
-        button_5 = tkinter.Button(self.window, text='5', command=lambda: self.pressnum('5'))
+        button_5 = Button(self.window, text='5', command=lambda: self.pressnum('5'))
         button_5.place(x=60, y=260, width=50, height=50)
         # 数字按钮6
-        button_6 = tkinter.Button(self.window, text='6', command=lambda: self.pressnum('6'))
+        button_6 = Button(self.window, text='6', command=lambda: self.pressnum('6'))
         button_6.place(x=115, y=260, width=50, height=50)
         # 功能按钮*
-        button_multiplication = tkinter.Button(self.window, text='*', command=lambda: self.presscalculate('*'))
+        button_multiplication = Button(self.window, text='*', command=lambda: self.presscalculate('*'))
         button_multiplication.place(x=170, y=260, width=50, height=50)
         # 功能按钮1/x
-        button_reciprocal = tkinter.Button(self.window, text='1/x', command=self.ds)
+        button_reciprocal = Button(self.window, text='1/x', command=self.ds)
         button_reciprocal.place(x=225, y=260, width=50, height=50)
         # 数字按钮1
-        button_1 = tkinter.Button(self.window, text='1', command=lambda: self.pressnum('1'))
+        button_1 = Button(self.window, text='1', command=lambda: self.pressnum('1'))
         button_1.place(x=5, y=315, width=50, height=50)
         # 数字按钮2
-        button_2 = tkinter.Button(self.window, text='2', command=lambda: self.pressnum('2'))
+        button_2 = Button(self.window, text='2', command=lambda: self.pressnum('2'))
         button_2.place(x=60, y=315, width=50, height=50)
         # 数字按钮3
-        button_3 = tkinter.Button(self.window, text='3', command=lambda: self.pressnum('3'))
+        button_3 = Button(self.window, text='3', command=lambda: self.pressnum('3'))
         button_3.place(x=115, y=315, width=50, height=50)
         # 功能按钮-
-        button_subtraction = tkinter.Button(self.window, text='-', command=lambda: self.presscalculate('-'))
+        button_subtraction = Button(self.window, text='-', command=lambda: self.presscalculate('-'))
         button_subtraction.place(x=170, y=315, width=50, height=50)
         # 功能按钮=
-        button_equal = tkinter.Button(self.window, text='=', command=lambda: self.pressequal())
+        button_equal = Button(self.window, text='=', command=lambda: self.pressequal())
         button_equal.place(x=225, y=315, width=50, height=105)
         # 数字按钮0
-        button_0 = tkinter.Button(self.window, text='0', command=lambda: self.pressnum('0'))
+        button_0 = Button(self.window, text='0', command=lambda: self.pressnum('0'))
         button_0.place(x=5, y=370, width=105, height=50)
         # 功能按钮.
-        button_point = tkinter.Button(self.window, text='.', command=lambda: self.pressnum('.'))
+        button_point = Button(self.window, text='.', command=lambda: self.pressnum('.'))
         button_point.place(x=115, y=370, width=50, height=50)
         # 功能按钮+
-        button_plus = tkinter.Button(self.window, text='+', command=lambda: self.presscalculate('+'))
+        button_plus = Button(self.window, text='+', command=lambda: self.presscalculate('+'))
         button_plus.place(x=170, y=370, width=50, height=50)
         #右下角显示输入的符号
         
