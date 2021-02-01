@@ -26,14 +26,20 @@ class calculator:
         self.window.iconbitmap('D:\\Git_Project\\Calculator\\python\\favicon.ico')#添加图标
         
         self.display = StringVar()#将要在大面板上显示的内容：数字及运算结果
-        self.display.set('来吧!!!')#设置初始内容
+        self.display.set('0')#设置初始内容
         self.display2 = StringVar()#将要在小面板上显示的内容：符号
+        self.display3 = StringVar()#将要在小面板上显示存储器的数据
+        self.display3_title = StringVar()
+        self.display3_title.set ("存储器数字:")
+        self.display4 = StringVar()#显示提示
+        self.display4.set('来吧!!!')
         
+        self.Storage = [] #设置一个存储器
         self.lists = []#设置一个全局变量：运算数字和符号的列表
         self.sign_in = False #添加一个用于判断是否按下运算符号的标志
         
-        self.window.minsize(280,450)#计算器最初大小
-        self.window.maxsize(600,450)#多出来的部分放历史记录
+        self.window.minsize(320,454)#计算器最初大小
+        self.window.maxsize(680,454)#多出来的部分放历史记录
         
         self.menus()
         self.layout()
@@ -100,97 +106,105 @@ class calculator:
     #计算器主界面摆放
     def layout(self):
 
-        show_label = Label(self.window, bd=3, bg='white', font=('宋体', 30), anchor='e', textvariable=self.display)
-        show_label.place(x=5, y=20, width=270, height=70)
+        show_label = Label(self.window, bd=3, bg='black', font=('楷体', 30), fg= 'white', anchor='e', textvariable=self.display)
+        show_label.place(x=25, y=20, width=270, height=70)
         # 功能按钮MC
-        button_mc = Button(self.window, text='MC', command=self.wait)
-        button_mc.place(x=5, y=95, width=50, height=50)
+        button_mc = Button(self.window, text='MC', bg = '#666', bd=2, command=self.wait)
+        button_mc.place(x=25, y=95, width=50, height=50)
         # 功能按钮MR
-        button_mr = Button(self.window, text='MR', command=self.wait)
-        button_mr.place(x=60, y=95, width=50, height=50)
+        button_mr = Button(self.window, text='MR', bg = '#666', bd=2, command=self.wait)
+        button_mr.place(x=80, y=95, width=50, height=50)
         # 功能按钮MS
-        button_ms = Button(self.window, text='MS', command=self.wait)
-        button_ms.place(x=115, y=95, width=50, height=50)
+        button_ms = Button(self.window, text='MS', bg = '#666', bd=2, command=self.wait)
+        button_ms.place(x=135, y=95, width=50, height=50)
         # 功能按钮M+
-        button_mjia = Button(self.window, text='M+', command=self.wait)
-        button_mjia.place(x=170, y=95, width=50, height=50)
+        button_mjia = Button(self.window, text='M+', bg = '#666', bd=2, command=self.wait)
+        button_mjia.place(x=190, y=95, width=50, height=50)
         # 功能按钮M-
-        button_mjian = Button(self.window, text='M-', command=self.wait)
-        button_mjian.place(x=225, y=95, width=50, height=50)
+        button_mjian = Button(self.window, text='M-', bg = '#666', bd=2, command=self.wait)
+        button_mjian.place(x=245, y=95, width=50, height=50)
         # 功能按钮←
-        button_zuo = Button(self.window, text='←', command=self.dele_one)
-        button_zuo.place(x=5, y=150, width=50, height=50)
+        button_zuo = Button(self.window, text='←', bg = '#666', bd=2, command=self.dele_one)
+        button_zuo.place(x=25, y=150, width=50, height=50)
         # 功能按钮CE
-        button_ce = Button(self.window, text='CE', command=lambda: self.display.set("重新输入"))
-        button_ce.place(x=60, y=150, width=50, height=50)
+        button_ce = Button(self.window, text='CE', bg = '#666', bd=2, command= self.ce)
+        button_ce.place(x=80, y=150, width=50, height=50)
         # 功能按钮C
-        button_c = Button(self.window, text='C', command=self.sweeppress)
-        button_c.place(x=115, y=150, width=50, height=50)
+        button_c = Button(self.window, text='C', bg = '#666', bd=2, command=self.sweeppress)
+        button_c.place(x=135, y=150, width=50, height=50)
         # 功能按钮±
-        button_zf = Button(self.window, text='±', command=self.zf)
-        button_zf.place(x=170, y=150, width=50, height=50)
+        button_zf = Button(self.window, text='±', bg = '#666', bd=2, command=self.zf)
+        button_zf.place(x=190, y=150, width=50, height=50)
         # 功能按钮√
-        button_kpf = Button(self.window, text='√', command=self.kpf)
-        button_kpf.place(x=225, y=150, width=50, height=50)
+        button_kpf = Button(self.window, text='√', bg = '#666', bd=2, command=self.kpf)
+        button_kpf.place(x=245, y=150, width=50, height=50)
         # 数字按钮7
-        button_7 = Button(self.window, text='7', command=lambda: self.pressnum('7'))
-        button_7.place(x=5, y=205, width=50, height=50)
+        button_7 = Button(self.window, text='7', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('7'))
+        button_7.place(x=25, y=205, width=50, height=50)
         # 数字按钮8
-        button_8 = Button(self.window, text='8', command=lambda: self.pressnum('8'))
-        button_8.place(x=60, y=205, width=50, height=50)
+        button_8 = Button(self.window, text='8', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('8'))
+        button_8.place(x=80, y=205, width=50, height=50)
         # 数字按钮9
-        button_9 = Button(self.window, text='9', command=lambda: self.pressnum('9'))
-        button_9.place(x=115, y=205, width=50, height=50)
+        button_9 = Button(self.window, text='9', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('9'))
+        button_9.place(x=135, y=205, width=50, height=50)
         # 功能按钮/
-        button_division = Button(self.window, text='/', command=lambda: self.presscalculate('/'))
-        button_division.place(x=170, y=205, width=50, height=50)
+        button_division = Button(self.window, text='/', bg='#708069', bd=2, command=lambda: self.presscalculate('/'))
+        button_division.place(x=190, y=205, width=50, height=50)
         # 功能按钮%
-        button_remainder = Button(self.window, text='//', command=lambda:self.presscalculate('//'))
-        button_remainder.place(x=225, y=205, width=50, height=50)
+        button_remainder = Button(self.window, text='//', bg='#708069', bd=2, command=lambda:self.presscalculate('//'))
+        button_remainder.place(x=245, y=205, width=50, height=50)
         # 数字按钮4
-        button_4 = Button(self.window, text='4', command=lambda: self.pressnum('4'))
-        button_4.place(x=5, y=260, width=50, height=50)
+        button_4 = Button(self.window, text='4', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('4'))
+        button_4.place(x=25, y=260, width=50, height=50)
         # 数字按钮5
-        button_5 = Button(self.window, text='5', command=lambda: self.pressnum('5'))
-        button_5.place(x=60, y=260, width=50, height=50)
+        button_5 = Button(self.window, text='5', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('5'))
+        button_5.place(x=80, y=260, width=50, height=50)
         # 数字按钮6
-        button_6 = Button(self.window, text='6', command=lambda: self.pressnum('6'))
-        button_6.place(x=115, y=260, width=50, height=50)
+        button_6 = Button(self.window, text='6', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('6'))
+        button_6.place(x=135, y=260, width=50, height=50)
         # 功能按钮*
-        button_multiplication = Button(self.window, text='*', command=lambda: self.presscalculate('*'))
-        button_multiplication.place(x=170, y=260, width=50, height=50)
+        button_multiplication = Button(self.window, text='*', bg='#708069', bd=2, command=lambda: self.presscalculate('*'))
+        button_multiplication.place(x=190, y=260, width=50, height=50)
         # 功能按钮1/x
-        button_reciprocal = Button(self.window, text='1/x', command=self.ds)
-        button_reciprocal.place(x=225, y=260, width=50, height=50)
+        button_reciprocal = Button(self.window, text='1/x', bg='#708069', bd=2, command=self.ds)
+        button_reciprocal.place(x=245, y=260, width=50, height=50)
         # 数字按钮1
-        button_1 = Button(self.window, text='1', command=lambda: self.pressnum('1'))
-        button_1.place(x=5, y=315, width=50, height=50)
+        button_1 = Button(self.window, text='1', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('1'))
+        button_1.place(x=25, y=315, width=50, height=50)
         # 数字按钮2
-        button_2 = Button(self.window, text='2', command=lambda: self.pressnum('2'))
-        button_2.place(x=60, y=315, width=50, height=50)
+        button_2 = Button(self.window, text='2', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('2'))
+        button_2.place(x=80, y=315, width=50, height=50)
         # 数字按钮3
-        button_3 = Button(self.window, text='3', command=lambda: self.pressnum('3'))
-        button_3.place(x=115, y=315, width=50, height=50)
+        button_3 = Button(self.window, text='3', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('3'))
+        button_3.place(x=135, y=315, width=50, height=50)
         # 功能按钮-
-        button_subtraction = Button(self.window, text='-', command=lambda: self.presscalculate('-'))
-        button_subtraction.place(x=170, y=315, width=50, height=50)
+        button_subtraction = Button(self.window, text='-', bg='#708069', bd=2, command=lambda: self.presscalculate('-'))
+        button_subtraction.place(x=190, y=315, width=50, height=50)
         # 功能按钮=
-        button_equal = Button(self.window, text='=', command=lambda: self.pressequal())
-        button_equal.place(x=225, y=315, width=50, height=105)
+        button_equal = Button(self.window, text='=', bg='#708069', bd=2, command=lambda: self.pressequal())
+        button_equal.place(x=245, y=315, width=50, height=105)
         # 数字按钮0
-        button_0 = Button(self.window, text='0', command=lambda: self.pressnum('0'))
-        button_0.place(x=5, y=370, width=105, height=50)
+        button_0 = Button(self.window, text='0', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('0'))
+        button_0.place(x=25, y=370, width=105, height=50)
         # 功能按钮.
-        button_point = Button(self.window, text='.', command=lambda: self.pressnum('.'))
-        button_point.place(x=115, y=370, width=50, height=50)
+        button_point = Button(self.window, text='.', bg='#bbbbbb', bd=2, command=lambda: self.pressnum('.'))
+        button_point.place(x=135, y=370, width=50, height=50)
         # 功能按钮+
-        button_plus = Button(self.window, text='+', command=lambda: self.presscalculate('+'))
-        button_plus.place(x=170, y=370, width=50, height=50)
-        #右下角显示输入的符号
-        
+        button_plus = Button(self.window, text='+', bg='#708069', bd=2, command=lambda: self.presscalculate('+'))
+        button_plus.place(x=190, y=370, width=50, height=50)
+        #左下角显示输入的符号
         show_label2 = Label(self.window, bd=3, bg='white', font=('宋体', 8), anchor='e', textvariable=self.display2)
-        show_label2.place(x=200, y=425)
+        show_label2.place(x=130, y=425)
         self.change_color()
+        #右上角显示存储器数字
+        show_label3 = Label(self.window, bd=3, bg='white', font=('宋体', 8), anchor='e', textvariable=self.display3)
+        show_label3.place(x=220, y=0)
+        
+        show_label3_title = Label(self.window, bd=3, font=('宋体', 8), anchor='e', textvariable=self.display3_title)
+        show_label3_title.place(x=150, y=0)
+        #左上角显示状态
+        show_label4 = Label(self.window, bd=3,  font=('宋体', 8), anchor='e', textvariable=self.display4)
+        show_label4.place(x=25, y=0)
 
     #左下颜色变换
     def change_color(self):
@@ -201,7 +215,7 @@ class calculator:
                         font=('Arial', 8),     # 字体和字体大小
                         #width=5, height=2  # 标签长宽（以字符长度计算）
                         )
-            l_show1.place(x=10, y=425)
+            l_show1.place(x=25, y=425)
 
         else:
             l_show1 = Label(self.window, 
@@ -210,12 +224,43 @@ class calculator:
                         font=('Arial', 8),     # 字体和字体大小
                         #width=5, height=2  # 标签长宽（以字符长度计算）
                         )
-            l_show1.place(x=10, y=425)
+            l_show1.place(x=25, y=425)
             
     #计算器菜单功能
     def myfunc(self):
         messagebox.showinfo('','程序员懒死在电脑前，打死也做不出的功能，只是装饰而已～')
-        
+'''    
+    def Mx(self,operator):
+
+        if operator == 'MC':
+            self.Storage.clear()
+            self.Storage.append('0')
+        elif operator == 'MR':
+            if self.sign_in:
+                self.display.set('0')
+            self.Storage.append(self.display.get())
+            expression = ''.join(self.Storage)
+            try:
+                result = eval(expression)
+            except:
+                result = '输入错误'
+            self.display.set(result)
+            sign_in = True
+        elif operator == 'MS':
+            self.Storage.clear()
+            self.Storage.append(self.display.get())
+        elif operator == 'M+':
+            self.Storage.append(self.display.get())
+        elif operator == 'M-':
+            if self.display.get().startswith('-'):
+                self.Storage.append(self.display.get())
+            else:
+                self.Storage.append('-' + self.display.get())
+        expression1 = ''.join(self.Storage)
+        res = eval(expression1)
+        self.display3.set(str(res)[:4])
+        self.display4.set("正在输入")
+'''        
     #数字方法
     def pressnum(self,num):
         # 全局化变量
@@ -233,10 +278,6 @@ class calculator:
         # 判断界面数字是否为0
         if oldnum == '0':
             self.display.set(num)
-        elif oldnum == '来吧!!!':
-            self.display.set(num)
-        elif oldnum == '重新输入':
-            self.display.set(num)
         else:
             # 连接上新按下的数字
             newnum = oldnum + num
@@ -244,7 +285,7 @@ class calculator:
             # 将按下的数字写到面板中
             self.display.set(newnum)
         self.change_color()
-
+        self.display4.set("正在输入")
 
     #运算函数
     def presscalculate(self,sign):
@@ -258,7 +299,7 @@ class calculator:
         # 设置运算符号为按下状态
         self.sign_in = True
         self.change_color()
-
+        self.display4.set("正在输入")
         
 
 
@@ -279,13 +320,17 @@ class calculator:
             self.sign_in = True
         # 清空运算列表
         self.lists.clear()
-
+        self.display4.set("计算完成")
 
     #暂未开发说明
     def wait(self):
         messagebox.showinfo('','功能在努力的实现，请期待2.0版本的更新')
 
-
+    #CE案件功能
+    def ce(self):
+        self.display.set('0')
+        self.display4.set("重新输入")
+        
     #←按键功能
     def dele_one(self):
         if self.display.get() == '' or self.display.get() == '0':
@@ -299,7 +344,7 @@ class calculator:
                 self.display.set(strnum)
             else:
                 self.display.set('0')
-
+        self.display4.set("删除一位")
 
     #±按键功能
     def zf(self):
@@ -308,23 +353,27 @@ class calculator:
             self.display.set(strnum[1:])
         elif strnum[0] != '-' and strnum != '0':
             self.display.set('-' + strnum)
-
+        self.display4.set("正负号")
 
     #1/x按键功能
     def ds(self):
-        dsnum = 1 / int(self.display.get())
+        try:
+            dsnum = 1 / int(self.display.get())
+        except:
+            dsnum = '输入错误'
         self.display.set(str(dsnum)[:10])
         if self.lists != 0:
             self.ispresssign = True
         # 清空运算列表
         self.lists.clear()
-
+        self.display4.set("倒数完成")
 
     #C按键功能
     def sweeppress(self):
         self.lists.clear()
-        self.display.set('来吧!!!')
-
+        self.display.set('0')
+        self.display4.set("来吧!!!")
+        self.display4.set("再算一次")
 
     #√按键功能
     def kpf(self):
@@ -338,7 +387,7 @@ class calculator:
             self.ispresssign = True
         # 清空运算列表
         self.lists.clear()
-
+        self.display4.set("开平方完成")
 
 #实例化对象
 mycalculator = calculator()        
